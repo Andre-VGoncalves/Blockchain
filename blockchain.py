@@ -66,9 +66,9 @@ class Blockchain(object):
         param block: <dict> Block
         return: <str>
         """
-            #Devemos ter certeza que o dicionario esta ordenado ou teremos hash inconsistentes
-            block_string = json.dumps(block, sort_keys = True).encode()
-            return hashlib.sha256(block_string).hexdigest()
+        #Devemos ter certeza que o dicionario esta ordenado ou teremos hash inconsistentes
+        block_string = json.dumps(block, sort_keys = True).encode()
+        return hashlib.sha256(block_string).hexdigest()
 
 
     @property
