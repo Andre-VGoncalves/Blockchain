@@ -29,6 +29,32 @@ class Blockchain:
 
 
     def valid_chain(self, chain):
+        """
+        determina se o blockchain é valido
+        param chain: <list> um blockchain
+        return bool
+        """
+        last_block = chain[0]
+        current_index = 1
+
+        while current_index < len(chain):
+            block = chain[current_index]
+            print (f'{last_block}')
+            print (f'{block}')
+            print ("\n-----------\n")
+            # checa se o hash do bloco esta correto
+            if block['previous_hash'] != self.hash(last_block):
+                return False
+
+            #chegando se a prova de trabalho é correto
+            if not self.valid_proof(last_block['proof'], block['proof']):
+                return False
+
+            last_block = block
+            current_index += 1
+        
+
+        return True
 
 
     def new_block(self, proof, previous_hash = None):
