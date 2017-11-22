@@ -32,7 +32,7 @@ class Blockchain(object):
             'previous_hash': previous_hash or self.hash(self.chain[-1])
 
         }
-        
+
         #redifini a lista atual de transações
         self.current_transaction = []
 
@@ -64,6 +64,6 @@ class Blockchain(object):
 
 
     @property
-    def last_block(self)
-    #devolve o ultimo bloco
-        pass
+    def last_block(self):
+    #devolve o ultimobloco
+        return self.chain[-1] 
