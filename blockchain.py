@@ -13,10 +13,23 @@ class Blockchain:
     def __init__(self):
         self.chain = []
         self.current_transaction = []
+        self.nodes = set()
         
 
         #Cria o bloco genesis
         self.new_block(previous_hash = 1, proof = 100)
+
+
+    def register_node(self, address):
+        """
+        adciona um novo nó para lista de nó
+        """
+        parsed_url = urlparse(address)
+        self.nodes.add(parsed_url.netloc)
+
+
+    def valid_chain(self, chain):
+
 
     def new_block(self, proof, previous_hash = None):
         #Cria um novo bloco e adiciona ao blockChain
