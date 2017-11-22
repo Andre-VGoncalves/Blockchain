@@ -56,6 +56,37 @@ class Blockchain:
 
         return True
 
+    def resolve_conflicts(self):
+
+        """
+        essa parte serve para resolver conflitos
+        substituindo nossos nós por nós mais longos
+        """
+        neighbours = self.nodes
+        new_chain = None
+        #procurando hash mais longos
+        max_length = len(self.chain)
+        #verifica os nós de todos blocos
+        for node in neighbours:
+            response = requests.get(f'http://{node}/chain')
+
+            if response.status_code == 200:
+                length = response.json()['length']
+                chain = response.json()['chain']
+                #verificar se comprimento é longo e se os blocos são validos
+                if length > max_length and self.valid_chain(chain):
+                    max_length = length
+                    new_chain = chain
+
+        #
+        if new_chain:
+            self.chain = new_chain
+            return True
+
+        return False
+        
+
+
 
     def new_block(self, proof, previous_hash = None):
         #Cria um novo bloco e adiciona ao blockChain
