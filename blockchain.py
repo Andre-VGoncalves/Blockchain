@@ -5,7 +5,6 @@ from urllib.parse import urlparse
 from uuid import uuid4
 from hashlib import sha256
 from textwrap import dedent
-
 import requests
 from flask import Flask, jsonify, request
 
@@ -41,7 +40,13 @@ class Blockchain:
         self.chain.append(block)
         return block
 
-    
+    @property
+    def last_block(self):
+    #devolve o ultimobloco
+        return self.chain[-1] 
+
+
+
     def new_transaction(self, sender, recipient, amount):
         #adciona uma nova transação a lista
         """
@@ -56,6 +61,7 @@ class Blockchain:
             'recipient': recipient,
             'amount': amount,
         })
+
         return self.last_block['index'] + 1
         
 
@@ -122,7 +128,10 @@ def new_transaction():
         return "Missing values", 400
 
     #criando uma nova transação
+    index = blockchain.new_transaction(values['sender'], values ['recipient'], values['amount'])
 
+    response = {'message': f'Transaction will be added to block {index}'}
+    return jsonify(response), 201
 
 @app.route('/chain', methods = ['GET'])
 def full_chain():
@@ -132,12 +141,5 @@ def full_chain():
     }
     return jsonify(response), 200
 
-
 if __name__ == '__main__':
     app.run(host = '0.0.0.0', port = 5000)
-
-
-    @property
-    def last_block(self):
-    #devolve o ultimobloco
-        return self.chain[-1] 
