@@ -10,18 +10,37 @@ from flask import Flask, jsonify, request
 
 class Blockchain(object):
     def __init__(self):
-        self.current_transaction = []
         self.chain = []
+        self.current_transaction = []
+        
 
         #Cria o bloco genesis
         self.new_block(previous_hash = 1, proof = 100)
 
-    def new_block(self):
+    def new_block(self, proof, previous_hash = None):
         #Cria um novo bloco e adiciona ao Chain
-        pass
+        """
+        proof: <int> a prova dada pelo algoritmo Prova do trabalho
+        previous_has:(opt)<str> o hash do bloco anterior
+        return: <dict> novo bloco
+        """
+        block = {
+            'index': len(self.chain) + 1,
+            'timestamp': time(),
+            'transactions': self.current_transaction,
+            'proof': proof,
+            'previous_hash': previous_hash or self.hash(self.chain[-1])
+
+        }
+        
+        #redifini a lista atual de transações
+        self.current_transaction = []
+
+        self.chain.append(block)
+        return block
 
     
-    def new_transaction(self):
+    def new_transaction(self, sender, recipient, amount):
         #adciona uma nova transação a lista
         """
         Cria uma nova transação que entra no ultimo bloco
