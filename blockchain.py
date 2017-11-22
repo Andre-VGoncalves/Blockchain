@@ -10,9 +10,11 @@ from flask import Flask, jsonify, request
 
 class Blockchain(object):
     def __init__(self):
-        self.chain = []
         self.current_transaction = []
+        self.chain = []
 
+        #Cria o bloco genesis
+        self.new_block(previous_hash = 1, proof = 100)
 
     def new_block(self):
         #Cria um novo bloco e adiciona ao Chain
