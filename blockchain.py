@@ -4,12 +4,13 @@ from time import time
 from urllib.parse import urlparse
 from uuid import uuid4
 from hashlib import sha256
+from textwrap import dedent
 
 import requests
 from flask import Flask, jsonify, request
 
 
-class Blockchain(object):
+class Blockchain:
     def __init__(self):
         self.chain = []
         self.current_transaction = []
@@ -94,7 +95,46 @@ class Blockchain(object):
         guess = f'{last_proof}{proof}'.encode()
         guess_hash = hashlib.sha256(guess).hexdigest()
         return guess_hash[:4] == "0000"
+        
+#instancia do nó
+app = Flask(__name__)
 
+
+#gerra um endereço global para o nó
+node_identifier = str(uuid4()).replace('-', '')
+
+#instancia do blackchain
+blockchain = Blockchain()
+    
+
+@app.route('/mine', methods = ['GET'])
+def mine():
+    return "We'll mine a new block"
+
+
+@app.route('/transaction/new', methods = ['GET'])
+def new_transaction():
+    values = request.get_json()
+
+    #checa que o requirimento são no Post
+    required = ['sender', 'recipient', 'amount']
+    if not all (k in values for k in required):
+        return "Missing values", 400
+
+    #criando uma nova transação
+
+
+@app.route('/chain', methods = ['GET'])
+def full_chain():
+    response = {
+        'chain': blockchain.chain,
+        'length': len(blockchain.chain)
+    }
+    return jsonify(response), 200
+
+
+if __name__ == '__main__':
+    app.run(host = '0.0.0.0', port = 5000)
 
 
     @property
