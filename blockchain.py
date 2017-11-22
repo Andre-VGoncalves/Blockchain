@@ -19,7 +19,7 @@ class Blockchain:
         self.new_block(previous_hash = 1, proof = 100)
 
     def new_block(self, proof, previous_hash = None):
-        #Cria um novo bloco e adiciona ao Chain
+        #Cria um novo bloco e adiciona ao blockChain
         """
         proof: <int> a prova dada pelo algoritmo Prova do trabalho
         previous_has:(opt)<str> o hash do bloco anterior
