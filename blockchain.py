@@ -3,6 +3,7 @@ import json
 from time import time
 from urllib.parse import urlparse
 from uuid import uuid4
+from hashlib import sha256
 
 import requests
 from flask import Flask, jsonify, request
@@ -60,7 +61,14 @@ class Blockchain(object):
     @staticmethod
     def hash(block):
         #hash do bloco.
-        pass
+        """
+        Cria um SHA-256 que é op Hash do bloco
+        param block: <dict> Block
+        return: <str>
+        """
+            #Devemos ter certeza que o dicionario esta ordenado ou teremos hash inconsistentes
+            block_string = json.dumps(block, sort_keys = True).encode()
+            return hashlib.sha256(block_string).hexdigest()
 
 
     @property
