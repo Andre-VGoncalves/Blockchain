@@ -115,7 +115,31 @@ blockchain = Blockchain()
 
 @app.route('/mine', methods = ['GET'])
 def mine():
-    return "We'll mine a new block"
+    #recuperamos a ultima prova para pegar a proxima prova
+    last_block = blockchain.last_block
+    last_proof = last_block['proof']
+    proof = blockchain.proof_of_work(last_proof)
+
+    #devemos  receber uma recompensa por minerar
+    # remedente 0 para indicar que extraiu uma nova moeda
+    blockchain.new_transaction(
+        sender = "0",
+        recipient = node_identifier,
+        amount = 1,
+    )
+
+    previous_hash = blockchain.hash(last_block)
+    block = blockchain.new_block(proof, previous_hash)
+
+    response = {
+        'message': "New Block forged",
+        'index': block['index'],
+        'transaction': block['transaction'],
+        'proof': block['proof'],
+        'previous_hash': block['previous_hash'],
+    }
+
+    return jsonify(response), 200
 
 
 @app.route('/transaction/new', methods = ['GET'])
