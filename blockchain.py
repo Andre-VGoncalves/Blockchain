@@ -23,7 +23,7 @@ class Blockchain:
 
     def register_node(self, address):
         """
-        adciona um novo nó para lista de nó
+        adciona um novo nó para lista de nó.
         """
         parsed_url = urlparse(address)
         self.nodes.add(parsed_url.netloc)
