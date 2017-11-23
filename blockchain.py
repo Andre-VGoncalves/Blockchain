@@ -20,12 +20,14 @@ class Blockchain:
         self.new_block(previous_hash = 1, proof = 100)
 
 
+
     def register_node(self, address):
         """
         adciona um novo nó para lista de nó
         """
         parsed_url = urlparse(address)
         self.nodes.add(parsed_url.netloc)
+
 
 
     def valid_chain(self, chain):
@@ -55,6 +57,7 @@ class Blockchain:
         
 
         return True
+
 
     def resolve_conflicts(self):
 
@@ -110,6 +113,7 @@ class Blockchain:
         self.chain.append(block)
         return block
 
+
     @property
     def last_block(self):
     #devolve o ultimobloco
@@ -158,6 +162,7 @@ class Blockchain:
         
         return proof
 
+
     @staticmethod
     def valid_proof(last_proof, proof):
         """
@@ -172,12 +177,14 @@ class Blockchain:
         guess_hash = hashlib.sha256(guess).hexdigest()
         return guess_hash[:4] == "0000"
         
+
 #instancia do nó
 app = Flask(__name__)
 
 
 #gerra um endereço global para o nó
 node_identifier = str(uuid4()).replace('-', '')
+
 
 #instancia do blackchain
 blockchain = Blockchain()
@@ -227,6 +234,7 @@ def new_transaction():
     response = {'message': f'Transaction will be added to block {index}'}
     return jsonify(response), 201
 
+
 @app.route('/chain', methods = ['GET'])
 def full_chain():
     response = {
@@ -272,6 +280,8 @@ def consensus():
         }
 
     return jsonify(response), 200
+
+
 
 if __name__ == '__main__':
     from argparse import ArgumentParser
